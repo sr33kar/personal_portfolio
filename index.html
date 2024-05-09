@@ -1,0 +1,394 @@
+<!doctype html>
+<html>
+<head>
+	<title>Sreekar Gadasu</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5754190689867714"
+     crossorigin="anonymous"></script>
+    <meta name="google-site-verification" content="UscQ8Ds6iaXZp6c3RQewcjDY_y9n0UpRzO-WFfO7hDw" />
+    <link rel="stylesheet" href="style.css"></link>
+	<link rel="icon" type="image/ico" href="assets/yellow-electric-lightning-bolt-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script>
+
+    window.addEventListener('load', onWndLoad, false);
+
+    function onWndLoad() {
+    
+        var slider = document.querySelector('.slider');
+        var sliders = slider.children;
+    
+    
+    
+    
+        var initX = null;  
+        var transX = 0;
+        var rotZ = 0;
+        var transY = 0;
+    
+        var curSlide = null;
+        
+        var Z_DIS = 50;
+        var Y_DIS = 10;
+        var TRANS_DUR = 0.4;
+    
+        var images=document.querySelectorAll('img');
+    for(var i=0;i<images.length;i++)
+        {
+        images[i].onmousemove=function(e){
+            e.preventDefault()
+            
+        }
+        images[i].ondragstart=function(e){
+            return false;
+            
+        }
+        }
+    
+        function init() {
+        
+            var z = 0, y = 0;
+
+            for (var i = sliders.length-1; i >=0; i--) {
+                sliders[i].style.transform = 'translateZ(' + z + 'px) translateY(' + y + 'px)';
+            
+                z -= Z_DIS;
+                y += Y_DIS;
+            }
+
+
+            attachEvents(sliders[sliders.length - 1]);
+
+        
+        
+        }
+        function attachEvents(elem) {
+            curSlide = elem;
+
+            curSlide.addEventListener('mousedown', slideMouseDown, false);
+            curSlide.addEventListener('touchstart', slideMouseDown, false);
+        }
+        init();
+        function slideMouseDown(e) {
+        
+            if (e.touches) {
+                initX = e.touches[0].clientX;
+            }
+            else {
+                initX = e.pageX;
+            }
+        
+        
+            document.addEventListener('mousemove', slideMouseMove, false);
+            document.addEventListener('touchmove', slideMouseMove, false);
+
+            document.addEventListener('mouseup', slideMouseUp, false);
+            document.addEventListener('touchend', slideMouseUp, false);
+        }
+        var prevSlide = null;
+    
+        function slideMouseMove(e) {
+            var mouseX;
+        
+            if (e.touches) {
+                mouseX = e.touches[0].clientX;
+            }
+            else {
+                mouseX = e.pageX;
+            }
+
+            transX += mouseX - initX;
+            rotZ = transX / 20;
+
+            transY = -Math.abs(transX / 15);
+        
+        
+        
+            curSlide.style.transition = 'none';
+            curSlide.style.webkitTransform = 'translateX(' + transX + 'px)' + ' rotateZ(' + rotZ + 'deg)' + ' translateY(' + transY + 'px)';
+        curSlide.style.transform = 'translateX(' + transX + 'px)' + ' rotateZ(' + rotZ + 'deg)' + ' translateY(' + transY + 'px)';
+            var j = 1;
+            //remains elements
+            for (var i = sliders.length -2; i >= 0; i--) {
+
+            sliders[i].style.webkitTransform = 'translateX(' + transX/(2*j) + 'px)' + ' rotateZ(' + rotZ/(2*j) + 'deg)' + ' translateY(' + (Y_DIS*j) + 'px)'+ ' translateZ(' + (-Z_DIS*j) + 'px)';
+            sliders[i].style.transform = 'translateX(' + transX/(2*j) + 'px)' + ' rotateZ(' + rotZ/(2*j) + 'deg)' + ' translateY(' + (Y_DIS*j) + 'px)'+ ' translateZ(' + (-Z_DIS*j) + 'px)';
+            sliders[i].style.transition = 'none';
+            j++;
+            }      
+            
+            
+            
+            initX =mouseX;
+            e.preventDefault();
+            if (Math.abs(transX) >= curSlide.offsetWidth-30) {
+            
+                document.removeEventListener('mousemove', slideMouseMove, false);
+                document.removeEventListener('touchmove', slideMouseMove, false);
+                curSlide.style.transition = 'ease 0.2s';
+                curSlide.style.opacity = 0;
+                prevSlide = curSlide;
+                attachEvents(sliders[sliders.length - 2]);
+                slideMouseUp();
+                setTimeout(function () {
+                    
+                
+                    
+                
+                    
+                    slider.insertBefore(prevSlide, slider.firstChild);
+                    
+                    prevSlide.style.transition = 'none';
+                    prevSlide.style.opacity = '1';
+                    slideMouseUp();
+                    
+                },201);
+                
+                
+                
+                return;
+            }
+        }
+        function slideMouseUp() {
+            transX = 0;
+            rotZ = 0;
+            transY = 0;
+        
+            curSlide.style.transition = 'cubic-bezier(0,1.95,.49,.73) '+TRANS_DUR+'s';
+
+            curSlide.style.webkitTransform = 'translateX(' + transX + 'px)' + 'rotateZ(' + rotZ + 'deg)' + ' translateY(' + transY + 'px)';
+        curSlide.style.transform = 'translateX(' + transX + 'px)' + 'rotateZ(' + rotZ + 'deg)' + ' translateY(' + transY + 'px)';
+            //remains elements
+            var j = 1;
+            for (var i = sliders.length -  2; i >= 0; i--) {
+                sliders[i].style.transition = 'cubic-bezier(0,1.95,.49,.73) ' + TRANS_DUR / (j + 0.9) + 's';
+            sliders[i].style.webkitTransform = 'translateX(' + transX + 'px)' + 'rotateZ(' + rotZ + 'deg)' + ' translateY(' + (Y_DIS*j) + 'px)' + ' translateZ(' + (-Z_DIS*j) + 'px)';
+            sliders[i].style.transform = 'translateX(' + transX + 'px)' + 'rotateZ(' + rotZ + 'deg)' + ' translateY(' + (Y_DIS*j) + 'px)' + ' translateZ(' + (-Z_DIS*j) + 'px)';
+
+            j++;
+            }
+            
+            document.removeEventListener('mousemove', slideMouseMove, false);
+            document.removeEventListener('touchmove', slideMouseMove, false);
+        
+        }
+
+
+    }
+        </script>
+    </head>
+    <body>
+        <script type="text/javascript">
+        function menu() {
+    var x = document.getElementById("links");
+
+    if (x.style.display === "none") {
+        x.style.display = "block";
+
+    } else {
+        x.style.display = "none";
+    }
+    }
+    </script>
+	<header>
+		<div id="logo">
+			<a id="logolink" href="index.html"> <img id="logolink" src="assets/icon_1.png" alt="" width="60vw" style="display: inline;"></a>
+			<div class="links" id="links">
+
+				<a href="#hackerrank">HackerRank</a>
+				<a href="#projects">projects</a>
+				<a href="#posters">posters</a>
+				<a href="#fcf-body">CONTACT US</a>
+
+
+
+			</div>
+			<button id="hamburger" type="button" name="menu" onclick="menu()"><img src="ham.png" height="50px" width="60px"></img></button>
+
+		</div>
+	</header>
+<div id="bg">
+    <div id="content">
+        <h1><span style="font-size: larger; color: rgb(255, 217, 0);">S</span>reekar <span style="font-size: larger; color: rgb(255, 217, 0);">G</span>adasu</h1>
+        <p>he/him</p>
+        <p>
+            A Computer Science Master's student at Arizona State University and experienced Software Developer. Specializing in AI, Data Mining, and Cloud Solutions, I leverage my skills in advanced programming and system design to deliver innovative and efficient technological solutions. Check out my projects below to see my work in action.
+            <br><br>
+            - 📫 How to reach me: <a href="mailto:gadasusreekar@gmail.com" style="text-decoration: underline; cursor: pointer; color: #e0e1dd;">gadasusreekar@gmail.com</a>
+        </p>
+
+        <h3>Connect with me:</h3>
+        <p>
+        <a href="https://linkedin.com/in/sreekar gadasu" target="blank" style="cursor: pointer;"><img src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="sreekar gadasu" height="30" width="40" /></a>
+        <a href="https://www.hackerrank.com/sreekar_gadasu" target="blank"><img src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/hackerrank.svg" alt="sreekar_gadasu" height="30" width="40" /></a>
+        <a href="https://www.leetcode.com/user0199vg" target="blank"><img src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/leet-code.svg" alt="user0199vg" height="30" width="40" /></a>
+        </p>
+
+        <h3>Languages and Tools:</h3>
+        <p> <a href="https://angular.io" target="_blank" rel="noreferrer"> <img src="https://angular.io/assets/images/logos/angular/angular.svg" alt="angular" width="40" height="40"/> </a> <a href="https://angular.io" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/angularjs/angularjs-original-wordmark.svg" alt="angularjs" width="30" height="30"/> </a> <a href="https://aws.amazon.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="aws" width="30" height="30"/> </a> <a href="https://azure.microsoft.com/en-in/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/microsoft_azure/microsoft_azure-icon.svg" alt="azure" width="30" height="30"/> </a> <a href="https://www.cprogramming.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/c/c-original.svg" alt="c" width="30" height="30"/> </a> <a href="https://www.w3schools.com/cpp/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg" alt="cplusplus" width="30" height="30"/> </a> <a href="https://www.w3schools.com/css/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="css3" width="30" height="30"/> </a> <a href="https://d3js.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/d3js/d3js-original.svg" alt="d3js" width="30" height="30"/> </a> <a href="https://www.docker.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original-wordmark.svg" alt="docker" width="30" height="30"/> </a> <a href="https://expressjs.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original-wordmark.svg" alt="express" width="30" height="30"/> </a> <a href="https://www.figma.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/figma/figma-icon.svg" alt="figma" width="30" height="30"/> </a> <a href="https://git-scm.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" alt="git" width="30" height="30"/> </a> <a href="https://graphql.org" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/graphql/graphql-icon.svg" alt="graphql" width="30" height="30"/> </a> <a href="https://heroku.com" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/heroku/heroku-icon.svg" alt="heroku" width="30" height="30"/> </a> <a href="https://www.w3.org/html/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="html5" width="30" height="30"/> </a> <a href="https://ionicframework.com" target="_blank" rel="noreferrer"> <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Ionic_Logo.svg" alt="ionic" width="30" height="30"/> </a> <a href="https://www.java.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg" alt="java" width="30" height="30"/> </a> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="30" height="30"/> </a> <a href="https://www.jenkins.io" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/jenkins/jenkins-icon.svg" alt="jenkins" width="30" height="30"/> </a> <a href="https://kubernetes.io" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/kubernetes/kubernetes-icon.svg" alt="kubernetes" width="30" height="30"/> </a> <a href="https://www.linux.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg" alt="linux" width="30" height="30"/> </a> <a href="https://mochajs.org" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/mochajs/mochajs-icon.svg" alt="mocha" width="30" height="30"/> </a> <a href="https://www.mongodb.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original-wordmark.svg" alt="mongodb" width="30" height="30"/> </a> <a href="https://www.microsoft.com/en-us/sql-server" target="_blank" rel="noreferrer"> <img src="https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg" alt="mssql" width="30" height="30"/> </a> <a href="https://www.mysql.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original-wordmark.svg" alt="mysql" width="30" height="30"/> </a> <a href="https://nodejs.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg" alt="nodejs" width="30" height="30"/> </a> <a href="https://opencv.org/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/opencv/opencv-icon.svg" alt="opencv" width="30" height="30"/> </a> <a href="https://www.oracle.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/oracle/oracle-original.svg" alt="oracle" width="30" height="30"/> </a> <a href="https://pandas.pydata.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/2ae2a900d2f041da66e950e4d48052658d850630/icons/pandas/pandas-original.svg" alt="pandas" width="30" height="30"/> </a> <a href="https://www.photoshop.com/en" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/photoshop/photoshop-line.svg" alt="photoshop" width="30" height="30"/> </a> <a href="https://www.php.net" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/php/php-original.svg" alt="php" width="30" height="30"/> </a> <a href="https://www.postgresql.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original-wordmark.svg" alt="postgresql" width="30" height="30"/> </a> <a href="https://postman.com" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg" alt="postman" width="30" height="30"/> </a> <a href="https://www.python.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" width="30" height="30"/> </a> <a href="https://pytorch.org/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/pytorch/pytorch-icon.svg" alt="pytorch" width="30" height="30"/> </a> <a href="https://reactjs.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" alt="react" width="30" height="30"/> </a> <a href="https://reactnative.dev/" target="_blank" rel="noreferrer"> <img src="https://reactnative.dev/img/header_logo.svg" alt="reactnative" width="30" height="30"/> </a> <a href="https://redux.js.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg" alt="redux" width="30" height="30"/> </a> <a href="https://sass-lang.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/sass/sass-original.svg" alt="sass" width="30" height="30"/> </a> <a href="https://scikit-learn.org/" target="_blank" rel="noreferrer"> <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg" alt="scikit_learn" width="30" height="30"/> </a> <a href="https://spring.io/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/springio/springio-icon.svg" alt="spring" width="30" height="30"/> </a> <a href="https://www.tensorflow.org" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/tensorflow/tensorflow-icon.svg" alt="tensorflow" width="30" height="30"/> </a></p>
+    </div>
+</div>
+
+<div id="specials">
+
+	<div id="hackerrank">
+        <br><br>
+        <h3 style="text-decoration: underline;">HacerRank Profile</h3>
+        
+        <img src="assets/hackerrank.png" width="80%" alt="">
+	</div>
+	<div id="projects">
+        <br>
+        <br>
+		<h3 style="text-decoration: underline;">My projects</h3>
+
+        
+        <div id="project" class="project-right">
+            <p><span style="font-size: 1.5em; font-weight: bold;">Machine Learning for Alzheimer's Diagnosis through Handwriting Analysis</span><br><br>
+                Aug 2023 - Dec 2023
+                <br><br>
+                Developed ML models using handwriting dynamics to classify Alzheimer's patients vs healthy individuals.
+                Achieved 97% accuracy with the Random Forest model, outperforming benchmarks—demonstrated the viability of
+                inexpensive screening for early intervention.
+			<br><br><a href="https://github.com/sr33kar/AlzheimersPrediction" target="_blank">Goto Github..</a>
+			</p>
+            <div>
+			    <img src="assets/alz.png" style="border-style: solid; border-color: orange; border-width: 8px;" width="80%" alt="">
+			</div>
+            
+		</div>
+
+        <div id="project" class="project-left">
+            <div>
+			    <img src="assets/cloud.png" style="border-style: solid; border-color: orange; border-width: 8px;" width="80%" alt="">
+            </div>
+			<p><span style="font-size: 1.5em; font-weight: bold;">Serverless Video Processing Pipeline with Hybrid Cloud Integration</span><br><br>
+                Aug 2023 - Dec 2023
+                <br><br>
+                Developed serverless video pipeline using AWS, OpenFaas functions, Kubernetes, Ceph object storage, and DynamoDB. Built
+                event-driven architecture for automated media processing with containers and microservices. Integrated NoSQL database for metadata persistence. Gained expertise in hybrid cloud, infrastructure as code, container
+                orchestration, and serverless functions
+			<br><br><a href="https://github.com/sr33kar/text-sharer" target="_blank">Goto Github..</a>
+			</p>
+		</div>
+
+        <div id="project" class="project-right">
+            <p><span style="font-size: 1.5em; font-weight: bold;">Turtlebot Routing System - Machine Learning, Robot Simulation</span><br><br>
+                Jan 2023 - May 2023
+                <br><br>
+                Engineered and deployed a computerized route generation system that increased efficiency by 16%. Utilized Reinforcement learning to analyze reward and cost functions, generating optimal routes based on reward function
+			<br><br>
+			</p>
+            <div>
+			    <img src="assets/turtlebot.png" style="border-style: solid; border-color: orange; border-width: 8px;" width="80%" alt="">
+			</div>
+            
+		</div>
+
+
+        <div id="project" class="project-left">
+            <div>
+			    <img src="assets/textsharer.png" style="border-style: solid; border-color: orange; border-width: 8px;" width="80%" alt="">
+            </div>
+			<p><span style="font-size: 1.5em; font-weight: bold;">Text Sharer Application - MERN Stack</span><br><br>
+                Jul 2021 - Sep 2021
+                <br><br>
+                Crafted a user-friendly application facilitating the sharing of personalized, customizable text content via unique URLs,
+                enhancing link clarity and readability. Facilitated seamless sharing, robust privacy, and accessibility controls, with the ability to customize daily
+			<br><br><a href="https://github.com/sr33kar/text-sharer" target="_blank">Goto Github..</a>
+			</p>
+		</div>
+
+        <div id="project" class="project-right">
+            <p><span style="font-size: 1.5em; font-weight: bold;">ExpOS - Experimental Operating System</span><br><br>
+                Jul 2019 -Dec 2019
+                <br><br>
+                Pioneered an experimental OS for an XSM-simulated machine, combining low-level programming expertise, optimization
+                strategies, and rigorous testing methodologies. Implemented File system, Job scheduling, User Management, and Resource
+                Management in the OS
+			<br><br><a href="https://github.com/sr33kar/eXpOS" target="_blank">Goto Github..</a>
+			</p>
+            <div>
+			    <img src="assets/expos.png" style="border-style: solid; border-color: orange; border-width: 8px;" width="80%" alt="">
+			</div>
+            
+		</div>
+		<div id="project" class="project-left">
+            <div>
+			    <img src="assets/Image_webp_mockup_1.jpg" width="80%" alt="">
+            </div>
+			<p><span style="font-size: 1.5em; font-weight: bold;">Image Meta Data Management System</span><br><br>A basic image meta data management system which is constructed over docker container technology. This is a minimalistic website that has its front end on one container and backend on other. This website allows users to upload their images and retrieve them based on the metadata that they search for. Framework used - Nodejs and database- MongoDB.
+			<br><br><a href="https://github.com/sr33kar/image-Meta-Data-management-system" target="_blank">Goto Github..</a>
+			</p>
+		</div>
+		<div id="project" class="project-right">
+            <p><span style="font-size: 1.5em; font-weight: bold;">Restaurant Management webp</span><br>This is a Owner sided web app that makes a restaurant owner's life easier. This maintains the stock present in the restaurant at every time and also inflow of orders out-flow of food stock.This mainly leads to a confusion in owner if they are using some old fashioned book techniques. Here we give all the room for the owner laziness and make all things happen at his finger tips.
+			<br><br><a href="https://github.com/sr33kar/restaurant-management-webapp" target="_blank">Goto Github..</a>
+			</p>
+            <div>
+			    <img src="assets/mg_mockup.jpg" width="80%" alt="">
+			</div>
+            
+		</div>
+		<div id="project" class="project-left">
+            <div>
+			    <img src="assets/nitcMUN_mockup.jpg" width="80%" alt="">
+            </div>
+			<p><span style="font-size: 1.5em; font-weight: bold;">IPF-MUN Webpage</span><br>As the head of the development and design team of the Industrial and Planning Forum(NITC), I developed this website for an event. This is a portfolio of the association and gives complete information on events, event rules, and teams.
+			<br><br><a href="https://github.com/sr33kar/IPF-MUN-Webp" target="_blank">Goto Github..</a>
+			</p>
+		</div>
+	</div>
+	<div id="posters">
+        <br>
+	    <h3 style="text-decoration: underline;" >Digital Work</h3>
+        <br>
+		<h3 id="small_heading">TechWeek, IPF</h3>
+		<div class="slider">
+			<div class="slide" ><img src="assets/posters/akinator zxdvf.jpg"/><p>Akinator</p></div>
+			<div class="slide" ><img src="assets/posters/LETS TALK copy.jpg" /><p>Lets Talk</p></div>
+			<div class="slide" ><img src="assets/posters/funnytise 12345.jpg" /><p>FunnyTise</p></div>
+			<div class="slide"><img src="assets/posters/FINAL.jpg" /><p>Corporate Walk</p></div>
+			<div class="slide"><img src="assets/posters/BR4.jpg" /><p>Board Room</p></div>
+			<div class="slide" ><img src="assets/posters/ad virtuso final-min.jpg" /><p>AD Virtuso</p></div>
+		</div>
+	</div>
+</div>
+<div class="fcf-body" id="fcf-body">
+
+    <div id="fcf-form">
+    <h3 class="fcf-h3">Contact me</h3>
+
+    <form id="fcf-form-id" class="fcf-form-class" method="POST" action="https://formsubmit.co/gadasusreekar@gmail.com">
+        
+        <div class="fcf-form-group">
+            <label for="Name" class="fcf-label">Your name</label>
+            <div class="fcf-input-group">
+                <input type="text" id="Name" name="Name" class="fcf-form-control" required>
+            </div>
+        </div>
+
+        <div class="fcf-form-group">
+            <label for="Email" class="fcf-label">Your email address</label>
+            <div class="fcf-input-group">
+                <input type="email" id="Email" name="Email" class="fcf-form-control" required>
+            </div>
+        </div>
+
+        <div class="fcf-form-group">
+            <label for="Message" class="fcf-label">Your message</label>
+            <div class="fcf-input-group">
+                <textarea id="Message" name="Message" class="fcf-form-control" rows="6" maxlength="3000" required></textarea>
+            </div>
+        </div>
+
+        <div class="fcf-form-group">
+            <button type="submit" id="fcf-button" class="fcf-btn fcf-btn-primary fcf-btn-lg fcf-btn-block">Send Message</button>
+        </div>
+
+    </form>
+    </div>
+
+</div>
+</body>
+<!--coded by- Sreekar- gadasusreekar@gmail.com-->
+</html>
